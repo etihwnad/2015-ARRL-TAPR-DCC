@@ -20,5 +20,5 @@ pdf: $(source).pdf
 
 .PHONY: clean
 clean:
-	rm -f *.aux *.log *.toc *.nav *.out *.snm *.dvi
+	rm -f *.bbl *.blg *.aux *.log *.toc *.nav *.out *.snm *.dvi
 

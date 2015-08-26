@@ -176,7 +176,8 @@ FUNCTION {default.name.latex.cmd}{ "" }
 
 
 % The default URL prefix.
-FUNCTION {default.name.url.prefix}{ "[Online]. Available:" }
+%FUNCTION {default.name.url.prefix}{ "[Online]. Available:" }
+FUNCTION {default.name.url.prefix}{ "" }
 
 
 % Other controls that cannot be accessed via IEEEtranBSTCTL entry type.
@@ -1443,7 +1444,6 @@ FUNCTION {format.article.title}
 { title duplicate$ empty$ 'skip$
     { this.to.prev.status
       this.status.std
-      "t" change.case$
     }
   if$
   "title" bibinfo.check
@@ -1465,7 +1465,6 @@ FUNCTION {format.article.title.electronic}
     { this.to.prev.status
       this.status.std
       cap.status.std
-      "t" change.case$ 
     }
   if$
   "title" bibinfo.check
