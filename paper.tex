@@ -54,20 +54,6 @@ Figure \figref{f:launches} shows that the number of CubeSat-class satellite laun
 Previously the domain of University projects, the last 3 years have seen a huge increase in non-government or university launches.
 These civilian satellites include commercial, like Planet Labs' Flock-1 satellites \cite{PlanetLabs}, non-profit, like The Planetary Society's recent LightSail \cite{PlanetarySociety}, and amateur, like AMSAT-NA's upcoming Fox-1 series \cite{AMSAT-NA}. 
 
-Each satellite owner typically operates their own ground station for command and control.
-The low-earth orbits (LEO) of these spacecraft result in short time windows when the spacecraft is above the local horizon for communication.
-As a result, owners seek to enlist the help of other suitably equipped stations for collection of data.
-The FUNcube project is a prime example of a well-organized effort to receive data from a satellite \cite{FUNcube}.
-
-Recent advances in low-cost, software-defined radio (SDR) technology and 3D printing have put the construction within the reach of individuals.
-Largely composed of Amateur Radio operators, these people receive telemetry and data from many satellites and provide the information to the owners and the general public.
-
-What is missing is a way to connect these many owners and ground station operators in a way that is flexible and open.
-The ESA's Global Educational Network for Satellite Operations \cite{GENSO}
-
-
-
-
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\columnwidth]{fig/cubesat-launches}
@@ -75,12 +61,106 @@ The ESA's Global Educational Network for Satellite Operations \cite{GENSO}
 \label{f:launches}
 \end{figure}
 
+Each satellite owner typically operates their own ground station for command and control.
+The low-earth orbits (LEO) of these spacecraft result in short time windows when the spacecraft is above the local horizon for communication.
+As a result, owners seek to enlist the help of other suitably equipped stations for collection of data.
+The FUNcube project is a prime example of a well-organized effort to receive data from a satellite \cite{FUNcube}.
+
+Recent advances in low-cost, software-defined radio (SDR) technology and 3D printing have put ground station ownership within the reach of individuals.
+Largely composed of Amateur Radio operators, these people receive telemetry and data from many satellites and provide the information to the owners and the general public.
+
+% TODO: GS idle time
+
+What is missing is a civilian infrastructure to connect these many owners and ground station operators in a way that is flexible and open.
+The ESA's Global Educational Network for Satellite Operations (GENSO) \cite{GENSO} was a notable attempt at such a network aimed at University-class projects and stations.
+The fact that the \verb|genso.org| domain name does not resolve to a live server is an indication of the practical current state of the project.
+
+First proposed as a part of the 2014 International Space Apps Challenge's ``Virtual Ground Station App -- Global Crowdsourcing of CubeSats'' Challenge \cite{SpaceAppsChallenge2014-SatNOGS}, the SatNOGS project seeks to build such a network and community.
+It was later submitted as an entry to the 2014 Hackaday Prize \cite{Hackaday-SatNOGS}, ultimately winning the grand prize of almost $\$200,000$.
+
+This paper seeks to give an overview of the SatNOGS project major components.
+Figure \figref{f:overall} gives a high-level overview of the relationship between users and ground stations.
+Figure \figref{modular} and the following sections describe the four major sub-projects: Network, DB, Client, and Ground Station.
+The modular approach maximizes use of already available components at a ground station.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{fig/overall-system}
+\caption{Overall view of the SatNOGS concept.}
+\label{f:overall}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{fig/four-components-titles-invert}
+\includegraphics[width=\columnwidth]{fig/modular-options}
+\caption{The four sub-projects are designed with a modular approach with well-defined interfaces, allowing the ability to relatively easily interface with existing ground stations.}
+\label{f:modular}
+\end{figure}
+
+Note, screen captures of the various software components and demonstrations are included in the more appropriate format of slides in the presentation instead of in the paper.
+
 
 \section{Network}
+The SatNOGS Network is accessed by users via a web interface.
+The user provides details about observation that they would like to schedule (which satellite, which band, time-frame, signal encoding, etc.).
+From this information, the system calculates the possible observation windows from the currently available Ground Stations (GS) connected to the Network with the necessary capabilities.
+Once the observer confirms the proposed ``observation job'' then it is sent as a job to each Ground Stations' job queue to be executed.
+Figure \figref{f:network} shows this process as a diagram.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{fig/network-flow}
+\caption{Diagram of a user scheduling an observation on the network.}
+\label{f:network}
+\end{figure}
+
+Ground Stations then collect and send observation data back to the Network.
+Uploaded data is then made available to the initiating user and any other third party via the observation's ID.
+Modern web technologies are used on the Network website to provide timeline and recording visualization and playback directly in the browser.
+Download links are also provided for further offline analysis.
+No special software or installation is necessary for users to interact with the Network.
+SatNOGS Network provides an API to allow other applications and services to query information and, in the future, automatically schedule observations.
+
+Calculation of candidate times when the target satellite is visible from an active ground station is performed with the assistance of the PyEphem library \cite{PyEphem}.
+The library accepts orbital elements for the satellite, Ground Station locations, and the desired time frame.
+With higher densities of Ground Stations which can see multiple satellites, this scheduling can be optimized for many factors.
+
+Because all code and documentation of all parts of the project are free and publicly available, anyone is able to contribute to these improvements.
+Indeed, this open collaboration is one of the SatNOGS project's founding principles.
+
 
 \section{Database}
+The centralization provided by the Network component requires a centralized source of satellite information such as frequencies and transmission modes.
+SatNOGS DB was created to address the fact that there was no known public source for this information.
+In the same spirit of the rest of the project, the database is open access and not specific only to the SatNOGS project.
+
+Specifically, DB is a crowd-sourced suggestions app for transponder data.
+Satellites are identified by their NORAD (now USSPACECOM) space object catalog number and their common name.
+Each object has an associated set of transponder records which indicate frequencies and modulation formats.
+SatNOGS Network pulls this information when calculating possible observations.
+
+Updates are accepted from the public and from other sources of satellite information with open APIs.
+As with the Network, user interaction is purely web-based and requires no additional software beyond a capable browser.
+
 
 \section{Client}
+SatNOGS Client consists of software running a computer which controls the ground station hardware.
+Figure \figref{f:client-flow} diagrams the internal (modular!) components of the client's interaction with the Network.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{fig/client-flow}
+\caption{Client software components and interactions.}
+\label{f:client-flow}
+\end{figure}
+
+The poller regularly checks the Network API for observation jobs scheduled for the local Ground Station.
+Information contained in each job includes satellite orbital elements, receiver tuning and demodulation parameters, and timing.
+The PyEphem \cite{PyEphem} library is used to calculate the necessary antenna pointing and doppler shift information for the duration of the requested pass.
+These specifics are then queued with the Scheduler to execute at the appropriate time.
+
+
 
 \section{Ground Station}
 
