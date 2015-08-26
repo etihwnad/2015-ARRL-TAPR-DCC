@@ -158,12 +158,26 @@ Figure \figref{f:client-flow} diagrams the internal (modular!) components of the
 
 The poller regularly checks the Network API for observation jobs scheduled for the local Ground Station.
 Information contained in each job includes satellite orbital elements, receiver tuning and demodulation parameters, and timing.
-The PyEphem \cite{PyEphem} library is used to calculate the necessary antenna pointing and doppler shift information for the duration of the requested pass.
-These specifics are then queued with the Scheduler to execute at the appropriate time.
+The PyEphem \cite{PyEphem} library is used to calculate the necessary antenna pointing and relative velocity for doppler shift calculation during the pass.
 
+Where possible, existing standard interfaces are used within the Client.
+These include using the daemons \verb|rotctl| for rotator control and \verb|rigctl| for frequency control from HamLib \cite{Hamlib}.
+Any rotator controller which works with \verb|rotctl| automatically works with the SatNOGS Client by providing the appropriate IP address and port number the rotator is listening on.
+
+External programs for starting the receiver driver are spawned before a scheduled observation and setup to listen for \verb|rotctl| commands for doppler frequency corrections throughout a pass.
+For use with the popular Realtek RTL2832U DVB-T dongles, the SatNOGS group maintains a version of \verb|rtl-sdr| \cite{rtl-sdr} software's \verb|rtl_fm| utility which accepts frequency control via \verb|rigctl| commands over a network port \cite{SatNOGS-rtlsdr}.
+Code for interfacing the Client with other SDR software is in progress, including receivers using GNU Radio \cite{GNURadio}.
+Radios whose baseband signals enter the computer via soundcard are also planned.
+
+At the end of a pass, demodulated signal data is placed in a queue for later upload to the Network.
+Logs and other reports are also sent back to the Network by other API actions.
 
 
 \section{Ground Station}
+The SatNOGS Ground Station sub-project encompasses the antennas, rotator, and RF path.
+Ground station owners execute the Client software and build or configure the hardware.
+
+
 
 \section{Conclusion}
 
