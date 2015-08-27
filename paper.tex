@@ -50,9 +50,21 @@
         Valparaiso University\\
         Valparaiso, Indiana\\
         \href{mailto:dan.white@valpo.edu}{dan.white@valpo.edu}}\\
-    \and
-    \IEEEauthorblockN{SatNOGS Developers}
-    \IEEEauthorblockA{Libre Space Foundation\\
+    %\and
+    \\
+    \IEEEauthorblockN{%
+        Ioannis Giannelos,
+        Agisilaos Zissimatos,
+        Eleytherios Kosmas,\\
+        Dimitrios Papadeas,
+        Pierros Papadeas,
+        Matthaios Papamathaiou,\\
+        Nikolaos Roussos,
+        Vasileios Tsiligiannis,
+        Ioannis Charitopoulos}
+    \IEEEauthorblockA{%
+        Libre Space Foundation\\
+        Athens, Greece\\
     \href{mailto:info@satnogs.org}{info@satnogs.org}}
 }
 
@@ -99,15 +111,15 @@ TODO: ground stations are not locally-used much, 1\% duty cycle.  SatNOGS can us
 
 What is missing is a civilian infrastructure to connect these many owners and ground station operators in a way that is flexible and open.
 The ESA's Global Educational Network for Satellite Operations (GENSO) \cite{GENSO} was a notable attempt at such a network aimed at University-class projects and stations.
-The fact that the \verb|genso.org| domain name does not resolve to a live server is an indication of the practical current state of the project.
+The fact that the \verb|genso.org| domain name does not resolve to a live server is practical indication of the current state of the project.
 
-First proposed as a part of the 2014 International Space Apps Challenge's ``Virtual Ground Station App -- Global Crowdsourcing of CubeSats'' Challenge \cite{SpaceAppsChallenge2014-SatNOGS}, the SatNOGS project seeks to build such a network and community.
-It was later submitted as an entry to the 2014 Hackaday Prize \cite{Hackaday-SatNOGS}, ultimately winning the grand prize of $\$196,418$.
+Members of \emph{Hackerspace.gr} \cite{Hackerspacegr} in Athens Greece first proposed SatNOGS as a part of the 2014 International Space Apps Challenge's ``Virtual Ground Station App -- Global Crowdsourcing of CubeSats'' Challenge \cite{SpaceAppsChallenge2014-SatNOGS}.
+It was later submitted as an entry to the 2014 Hackaday Prize \cite{HackadayPrize2014}, ultimately winning the grand prize of $\$196,418$.
+The funds provided seed money to start the Libre Space Foundation \cite{LibreSpaceFoundation}, a new non-profit dedicated to supporting free and open source space and related projects.
 
 % TODO:
-\cite{Hackerspacegr}
-\cite{Silver2015}
-\cite{SatNOGS-Hamvention2015}
+%\cite{Silver2015}
+%\cite{SatNOGS-Hamvention2015}
 
 This paper seeks to give an overview of the SatNOGS project major components.
 Figure \figref{f:overall} gives a high-level overview of the relationship between users and ground stations.
@@ -129,7 +141,9 @@ The modular approach maximizes use of already available components at a ground s
 \label{f:modular}
 \end{figure}
 
-Note, screen captures of the various software components and demonstrations are included in the more appropriate format of slides in the presentation instead of in the paper.
+All code and hardware designs for the project are publicly available \cite{SatNOGS-github} under Open Software (AGPLv3 and GPLv3) and Open Hardware (CERN OHLv1.2) licenses.
+Software documentation may be found at \cite{SatNOGS-docs}.
+Note, screen captures of the various software components, hardware pictures, and demonstrations are included in the more appropriate format of the presentation instead of in the paper.
 
 
 \section{Network}
