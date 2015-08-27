@@ -28,7 +28,7 @@
 
 
 % figure reference formatting
-\newcommand{\figref}[1]{Fig.~\ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
 
 % consistent image widths
 \newlength{\imgwidth}
@@ -104,7 +104,7 @@ Modularity in all the systems promotes the dual-use of ground stations by not in
 \IEEEPARstart{C}{ivilian} satellite launches have been in a state of change in recent years from the introduction of very small spacecraft which use standardized launch carriers such as the CubeSat and PPOD specifications \cite{WP-CubeSat}.
 This has lowered the bar to satellite ownership and their availability for educational and amateur projects and citizen science.
 
-Figure \figref{f:launches} shows that the number of CubeSat-class satellite launches has increased nearly exponentially since the first in 2000.
+\figref{f:launches} shows that the number of CubeSat-class satellite launches has increased nearly exponentially since the first in 2000.
 Previously the domain of University projects, the last 3 years have seen a huge increase in non-government or university launches.
 These civilian satellites include commercial, like Planet Labs' Flock-1 satellites \cite{PlanetLabs}, non-profit, like The Planetary Society's recent LightSail \cite{PlanetarySociety}, and amateur, like AMSAT-NA's upcoming Fox-1 series \cite{AMSAT-NA}. 
 
@@ -132,25 +132,25 @@ Largely composed of Amateur Radio operators, these people receive telemetry and 
 
 Once an individual or organization builds a ground station, especially if not a commercial venture, the hardware ends up sitting idle for a great majority of the time.
 This capability, when not being actively used by the local owner, could be utilized for reception of other satellites.
-The SETI@Home \cite{SETI@home} project is one of the earliest and well-known projects to make use of idle resources -- computer compute cycles in that case.
+The SETI@home project is one of the earliest and well-known projects to make use of idle resources -- compute cycles in that case \cite{SETI@home}.
 
 What is missing is a civilian infrastructure to connect these many owners and ground station operators in a way that is flexible and open.
 The ESA's Global Educational Network for Satellite Operations (GENSO) \cite{GENSO} was a notable attempt at such a network aimed at University-class projects and stations.
-The fact that the \verb|genso.org| domain name does not resolve to a live server is practical indication of the current state of the project.
+The fact that the \verb|genso.org| domain name does not resolve to a live server is a practical indication of the current state of the project.
 
 Members of \emph{Hackerspace.gr} \cite{Hackerspacegr} in Athens Greece first proposed SatNOGS as a part of the 2014 International Space Apps Challenge's ``Virtual Ground Station App -- Global Crowdsourcing of CubeSats'' Challenge \cite{SpaceAppsChallenge2014-SatNOGS}.
-It was later submitted as an entry to the 2014 Hackaday Prize \cite{HackadayPrize2014}, ultimately winning the grand prize of $\$196,418$.
+It was later submitted as an entry to the 2014 Hackaday Prize, ultimately winning the grand prize of $\$196,418$ \cite{HackadayPrize2014}.
 The funds provided seed money to start the Libre Space Foundation \cite{LibreSpaceFoundation}, a new non-profit dedicated to supporting free and open source space and related projects.
 
 A timely and unique aspect of the project is its bridging of the Maker / Hacker and the Amateur Radio communities.
 The 2015 TAPR/AMSAT Banquet's speaker, Michael Ossmann AD\pmzeroslash NR pointed out the many characteristics valued and shared by these two communities \cite{HamRadioNow211}.
-Ward Silver's article for Makezine also does a good job of drawing these connections \cite{Silver2015}.
+Ward Silver, N\pmzeroslash AX's article for Makezine also does a good job of drawing these connections \cite{Silver2015}.
 
 % TODO: \cite{SatNOGS-Hamvention2015}
 
 This paper seeks to give an overview of the SatNOGS project's major components.
-Figure \figref{f:overall} gives a high-level overview of the relationship between users and ground stations.
-Figure \figref{f:modular} and the following sections describe the four major sub-projects: Network, DB, Client, and Ground Station.
+\figref{f:overall} gives a high-level overview of the relationship between users and ground stations.
+\figref{f:modular} and the following sections describe the four major sub-projects: Network, DB, Client, and Ground Station.
 The modular approach maximizes use of already available components at a ground station.
 
 \begin{figure}[b]
@@ -160,7 +160,7 @@ The modular approach maximizes use of already available components at a ground s
 \label{f:modular}
 \end{figure}
 
-All code and hardware designs for the project are publicly available \cite{SatNOGS-github} under Open Software (AGPLv3 and GPLv3) and Open Hardware (CERN OHLv1.2) licenses.
+All code and hardware designs for the project are publicly available under Open Software (AGPLv3 and GPLv3) and Open Hardware (CERN OHLv1.2) licenses \cite{SatNOGS-github}.
 Software documentation may be found at \cite{SatNOGS-docs}.
 Note, screen captures of the various software components, hardware pictures, and demonstrations are included in the more appropriate format of the presentation instead of in the paper.
 
@@ -168,9 +168,9 @@ Note, screen captures of the various software components, hardware pictures, and
 \section{Network}
 The SatNOGS Network is accessed by users via a web interface.
 The user provides details about observation that they would like to schedule (which satellite, which band, time-frame, signal encoding, etc.).
-From this information, the system calculates the possible observation windows from the currently available Ground Stations (GS) connected to the Network with the necessary capabilities.
-Once the observer confirms the proposed ``observation job'' then it is sent as a job to each Ground Stations' job queue to be executed.
-Figure \figref{f:network} shows this process as a diagram.
+From this information, the system calculates the possible observation windows from the currently available Ground Stations connected to the Network having the necessary capabilities.
+Once the observer confirms the proposed ``Observation Job'' then it is sent as a job to each Ground Stations' job queue to be executed.
+\figref{f:network} shows this process as a diagram.
 
 \begin{figure}[htbp]
 \centering
@@ -179,7 +179,7 @@ Figure \figref{f:network} shows this process as a diagram.
 \label{f:network}
 \end{figure}
 
-Ground Stations then collect and send observation data back to the Network.
+Ground Stations collect observation data then send it back to the Network.
 Uploaded data is then made available to the initiating user and any other third party via the observation's ID.
 Modern web technologies are used on the Network website to provide timeline and recording visualization and playback directly in the browser.
 Download links are also provided for further offline analysis.
@@ -195,7 +195,7 @@ Indeed, this open collaboration is one of the SatNOGS project's founding princip
 
 
 \section{Database}
-The centralization provided by the Network component requires a centralized source of satellite information such as frequencies and transmission modes.
+The coordination and aggregation provided by the Network component requires a centralized source of satellite information such as frequencies and transmission modes.
 SatNOGS DB was created to address the fact that there was no known public source for this information.
 In the same spirit of the rest of the project, the database is open access and not specific only to the SatNOGS project.
 
@@ -205,12 +205,12 @@ Each object has an associated set of transponder records which indicate frequenc
 SatNOGS Network pulls this information when calculating possible observations.
 
 Updates are accepted from the public and from other sources of satellite information with open APIs.
-As with the Network, user interaction is purely web-based and requires no additional software beyond a capable browser.
+As with the Network, user interaction is purely web-based and requires no additional software besides a capable browser.
 
 
 \section{Client}
 SatNOGS Client consists of software running a computer which controls the ground station hardware.
-Figure \figref{f:client-flow} diagrams the internal (modular!) components of the client's interaction with the Network.
+\figref{f:client-flow} diagrams the internal (modular!) components of the client's interaction with the Network.
 
 \begin{figure}[htbp]
 \centering
@@ -258,6 +258,7 @@ By using a modular approach to the ground station segment, the existing stations
 Avoiding custom, network-specific software and hardware and ensuring all design information, code, and received data is and remains freely available is a core tenet of the project.
 Individuals and organizations are encouraged to partner with the project to help realize these goals.
 
+\IEEEtriggeratref{10}
 \bibliography{references}
 
 \end{document}
