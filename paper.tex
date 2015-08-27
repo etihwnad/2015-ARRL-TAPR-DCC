@@ -1,5 +1,6 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[conference,12pt]{IEEEtran}
 
+\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[]{hyperref}
 \hypersetup{
@@ -19,17 +20,40 @@
 % figure reference formatting
 \newcommand{\figref}[1]{Fig.~\ref{#1}}
 
+% consistent image widths
+\newlength{\figwidth}
+\setlength{\figwidth}{\columnwidth}
+%\setlength{\figwidth}{4in}
+
+
+\newcommand*{\pmzeroslash}{%
+    \sbox0{0}%
+    \sbox2{/}%
+    \sbox4{%
+      \raise\dimexpr((\ht0-\dp0)-(\ht2-\dp2))/2\relax\copy2 %
+    }%
+    \ooalign{%
+      \hfill\copy4 \hfill\cr
+      \hfill0\hfill\cr
+    }%
+    \vphantom{0\copy4 }% correct overall height and depth of the symbol
+}
 
 % TODO: check margins
 
 
+% \IEEEauthorrefmark{1}
 \author{
-    \IEEEauthorblockN{Daniel J. White\IEEEauthorrefmark{1},
-        SatNOGS Developers\IEEEauthorrefmark{2}}
-    \IEEEauthorblockA{\IEEEauthorrefmark{1}Valparaiso University, \href{mailto:dan.white@valpo.edu}{dan.white@valpo.edu}}
-    \IEEEauthorblockA{\IEEEauthorrefmark{2}Libre Space Foundation,
+    \IEEEauthorblockN{Daniel J. White, Ph.D., AD\pmzeroslash CQ}
+    %\IEEEauthorblockN{Daniel J. White, Ph.D., AD\O CQ}
+    \IEEEauthorblockA{%
+        Valparaiso University\\
+        Valparaiso, Indiana\\
+        \href{mailto:dan.white@valpo.edu}{dan.white@valpo.edu}}\\
+    \and
+    \IEEEauthorblockN{SatNOGS Developers}
+    \IEEEauthorblockA{Libre Space Foundation\\
     \href{mailto:info@satnogs.org}{info@satnogs.org}}
-    
 }
 
 \title{SatNOGS: Satellite~Networked~Open~Ground~Station}
@@ -49,6 +73,7 @@
 
 \section{Introduction}
 \IEEEPARstart{T}{he} SatNOGS\cite{SatNOGS} project seeks to build a full stack of open technologies for satellite ground stations.
+Blah foo bar asdfksadflsadfsad klsad flsadf sadfsadlkjfdsaf.
 
 Figure \figref{f:launches} shows that the number of CubeSat-class satellite launches has increased nearly exponentially since the first in 2000.
 Previously the domain of University projects, the last 3 years have seen a huge increase in non-government or university launches.
@@ -56,7 +81,7 @@ These civilian satellites include commercial, like Planet Labs' Flock-1 satellit
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\columnwidth]{fig/cubesat-launches}
+\includegraphics[width=\figwidth]{fig/cubesat-launches}
 \caption{CubeSat launches per year through 2015-07-17, from \cite{SwartwoutDatabase}.  The ``Commercial'' category includes non-profit and amateur satellites.}
 \label{f:launches}
 \end{figure}
@@ -77,7 +102,12 @@ The ESA's Global Educational Network for Satellite Operations (GENSO) \cite{GENS
 The fact that the \verb|genso.org| domain name does not resolve to a live server is an indication of the practical current state of the project.
 
 First proposed as a part of the 2014 International Space Apps Challenge's ``Virtual Ground Station App -- Global Crowdsourcing of CubeSats'' Challenge \cite{SpaceAppsChallenge2014-SatNOGS}, the SatNOGS project seeks to build such a network and community.
-It was later submitted as an entry to the 2014 Hackaday Prize \cite{Hackaday-SatNOGS}, ultimately winning the grand prize of almost $\$200,000$.
+It was later submitted as an entry to the 2014 Hackaday Prize \cite{Hackaday-SatNOGS}, ultimately winning the grand prize of $\$196,418$.
+
+% TODO:
+\cite{Hackerspacegr}
+\cite{Silver2015}
+\cite{SatNOGS-Hamvention2015}
 
 This paper seeks to give an overview of the SatNOGS project major components.
 Figure \figref{f:overall} gives a high-level overview of the relationship between users and ground stations.
@@ -86,15 +116,15 @@ The modular approach maximizes use of already available components at a ground s
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\columnwidth]{fig/overall-system}
+\includegraphics[width=\figwidth]{fig/overall-system}
 \caption{Overall view of the SatNOGS concept.}
 \label{f:overall}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\columnwidth]{fig/four-components-titles-invert}
-\includegraphics[width=\columnwidth]{fig/modular-options}
+\includegraphics[width=\figwidth]{fig/four-components-titles-invert}
+\includegraphics[width=\figwidth]{fig/modular-options}
 \caption{The four sub-projects are designed with a modular approach with well-defined interfaces, allowing the ability to relatively easily interface with existing ground stations.}
 \label{f:modular}
 \end{figure}
@@ -111,7 +141,7 @@ Figure \figref{f:network} shows this process as a diagram.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\columnwidth]{fig/network-flow}
+\includegraphics[width=\figwidth]{fig/network-flow}
 \caption{Diagram of a user scheduling an observation on the network.}
 \label{f:network}
 \end{figure}
@@ -151,7 +181,7 @@ Figure \figref{f:client-flow} diagrams the internal (modular!) components of the
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\columnwidth]{fig/client-flow}
+\includegraphics[width=\figwidth]{fig/client-flow}
 \caption{Client software components and interactions.}
 \label{f:client-flow}
 \end{figure}
@@ -176,6 +206,11 @@ Logs and other reports are also sent back to the Network by other API actions.
 \section{Ground Station}
 The SatNOGS Ground Station sub-project encompasses the antennas, rotator, and RF path.
 Ground station owners execute the Client software and build or configure the hardware.
+Plans and instructions are available for the v2 ground station and are being finalized for the updated v3 version.
+Gears and other parts are 3D printed and the rest of the hardware for the ground station is easily available.
+Besides access to a 3D printer, only hand tools are required for building either version.
+
+
 
 
 
