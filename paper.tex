@@ -1,4 +1,12 @@
-\documentclass[conference,12pt]{IEEEtran}
+
+% ensure we get the correct margins
+% http://www.tapr.org/dcc.html#dccsubmissionguidelines
+\newcommand{\CLASSINPUTtoptextmargin}{0.8in}
+\newcommand{\CLASSINPUTbottomtextmargin}{1in}
+\newcommand{\CLASSINPUTinnersidemargin}{0.75in}
+\newcommand{\CLASSINPUToutersidemargin}{0.75in}
+
+\documentclass[conference,letterpaper,12pt]{IEEEtran}
 
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -11,6 +19,8 @@
     citecolor=blue,
 }
 
+\usepackage[caption=false]{subfig}
+
 \usepackage{url}
 \usepackage{cite}
 
@@ -21,9 +31,9 @@
 \newcommand{\figref}[1]{Fig.~\ref{#1}}
 
 % consistent image widths
-\newlength{\figwidth}
-\setlength{\figwidth}{\columnwidth}
-%\setlength{\figwidth}{4in}
+\newlength{\imgwidth}
+\setlength{\imgwidth}{\columnwidth}
+%\setlength{\imgwidth}{4in}
 
 
 \newcommand*{\pmzeroslash}{%
@@ -39,7 +49,7 @@
     \vphantom{0\copy4 }% correct overall height and depth of the symbol
 }
 
-% TODO: check margins
+%  TODO: check margins
 
 
 % \IEEEauthorrefmark{1}
@@ -78,14 +88,21 @@
 \maketitle
 
 \begin{abstract}
-    TODO
+The SatNOGS, or Satellite Network Open Ground Stations, project promotes and supports free and open space applications.
+It seeks to solve the problem of connecting many satellite users/observers to many ground station operators.
+Modern open software, web, and hardware techniques are used in implementing the Network, Database, Client, and Ground Station sub-projects.
+Modularity in all the systems promotes the dual-use of ground stations by not interfering with local operation while utilizing the great amount of time a civilian, non-commercial ground station would otherwise sit idle.
 \end{abstract}
 
 
+\begin{IEEEkeywords}
+    SatNOGS, CubeSat, software-defined radio, satellite ground station, open source
+\end{IEEEkeywords}
 
 \section{Introduction}
 \IEEEPARstart{T}{he} SatNOGS\cite{SatNOGS} project seeks to build a full stack of open technologies for satellite ground stations.
-Blah foo bar asdfksadflsadfsad klsad flsadf sadfsadlkjfdsaf.
+\IEEEPARstart{C}{ivilian} satellite launches have been in a state of change in recent years from the introduction of very small spacecraft which use standardized launch carriers such as the CubeSat and PPOD specifications \cite{WP-CubeSat}.
+This has lowered the bar to satellite ownership and their availability for educational and amateur projects and citizen science.
 
 Figure \figref{f:launches} shows that the number of CubeSat-class satellite launches has increased nearly exponentially since the first in 2000.
 Previously the domain of University projects, the last 3 years have seen a huge increase in non-government or university launches.
@@ -93,7 +110,7 @@ These civilian satellites include commercial, like Planet Labs' Flock-1 satellit
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\figwidth]{fig/cubesat-launches}
+\includegraphics[width=\imgwidth]{fig/cubesat-launches}
 \caption{CubeSat launches per year through 2015-07-17, from \cite{SwartwoutDatabase}.  The ``Commercial'' category includes non-profit and amateur satellites.}
 \label{f:launches}
 \end{figure}
@@ -101,13 +118,21 @@ These civilian satellites include commercial, like Planet Labs' Flock-1 satellit
 Each satellite owner typically operates their own ground station for command and control.
 The low-earth orbits (LEO) of these spacecraft result in short time windows when the spacecraft is above the local horizon for communication.
 As a result, owners seek to enlist the help of other suitably equipped stations for collection of data.
-The FUNcube project is a prime example of a well-organized effort to receive data from a satellite \cite{FUNcube}.
+The FUNcube project is a prime example of a well-organized effort to receive and collect data from satellite for educational outreach \cite{FUNcube}.
 
 Recent advances in low-cost, software-defined radio (SDR) technology and 3D printing have put ground station ownership within the reach of individuals.
 Largely composed of Amateur Radio operators, these people receive telemetry and data from many satellites and provide the information to the owners and the general public.
 
+\begin{figure}[b]
+\centering
+\includegraphics[width=\imgwidth]{fig/overall-system}
+\caption{Overall view of the SatNOGS concept.}
+\label{f:overall}
+\end{figure}
 
-TODO: ground stations are not locally-used much, 1\% duty cycle.  SatNOGS can use the otherwise idle time.  Like SETI@home, folding@home, etc.
+Once an individual or organization builds a ground station, especially if not a commercial venture, the hardware ends up sitting idle for a great majority of the time.
+This capability, when not being actively used by the local owner, could be utilized for reception of other satellites.
+The SETI@Home \cite{SETI@home} project is one of the earliest and well-known projects to make use of idle resources -- computer compute cycles in that case.
 
 What is missing is a civilian infrastructure to connect these many owners and ground station operators in a way that is flexible and open.
 The ESA's Global Educational Network for Satellite Operations (GENSO) \cite{GENSO} was a notable attempt at such a network aimed at University-class projects and stations.
@@ -117,26 +142,20 @@ Members of \emph{Hackerspace.gr} \cite{Hackerspacegr} in Athens Greece first pro
 It was later submitted as an entry to the 2014 Hackaday Prize \cite{HackadayPrize2014}, ultimately winning the grand prize of $\$196,418$.
 The funds provided seed money to start the Libre Space Foundation \cite{LibreSpaceFoundation}, a new non-profit dedicated to supporting free and open source space and related projects.
 
-% TODO:
-%\cite{Silver2015}
-%\cite{SatNOGS-Hamvention2015}
+A timely and unique aspect of the project is its bridging of the Maker / Hacker and the Amateur Radio communities.
+The 2015 TAPR/AMSAT Banquet's speaker, Michael Ossmann AD\pmzeroslash NR pointed out the many characteristics valued and shared by these two communities \cite{HamRadioNow211}.
+Ward Silver's article for Makezine also does a good job of drawing these connections \cite{Silver2015}.
 
-This paper seeks to give an overview of the SatNOGS project major components.
+% TODO: \cite{SatNOGS-Hamvention2015}
+
+This paper seeks to give an overview of the SatNOGS project's major components.
 Figure \figref{f:overall} gives a high-level overview of the relationship between users and ground stations.
 Figure \figref{f:modular} and the following sections describe the four major sub-projects: Network, DB, Client, and Ground Station.
 The modular approach maximizes use of already available components at a ground station.
 
-\begin{figure}[htbp]
+\begin{figure}[b]
 \centering
-\includegraphics[width=\figwidth]{fig/overall-system}
-\caption{Overall view of the SatNOGS concept.}
-\label{f:overall}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\figwidth]{fig/four-components-titles-invert}
-\includegraphics[width=\figwidth]{fig/modular-options}
+\includegraphics[width=\imgwidth]{fig/components-modular}%
 \caption{The four sub-projects are designed with a modular approach with well-defined interfaces, allowing the ability to relatively easily interface with existing ground stations.}
 \label{f:modular}
 \end{figure}
@@ -155,7 +174,7 @@ Figure \figref{f:network} shows this process as a diagram.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\figwidth]{fig/network-flow}
+\includegraphics[width=\imgwidth]{fig/network-flow}
 \caption{Diagram of a user scheduling an observation on the network.}
 \label{f:network}
 \end{figure}
@@ -195,7 +214,7 @@ Figure \figref{f:client-flow} diagrams the internal (modular!) components of the
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\figwidth]{fig/client-flow}
+\includegraphics[width=\imgwidth]{fig/client-flow}
 \caption{Client software components and interactions.}
 \label{f:client-flow}
 \end{figure}
@@ -224,11 +243,20 @@ Plans and instructions are available for the v2 ground station and are being fin
 Gears and other parts are 3D printed and the rest of the hardware for the ground station is easily available.
 Besides access to a 3D printer, only hand tools are required for building either version.
 
+Because the Ground Station rotator's controller implements the common EasyComm 2 protocol, it acts like any other homebrew or commercial rotator controller using the same format.
+The Client software therefore works exactly the same with the SatNOGS rotator design or with an existing station's rotator.
 
-
+There are designs for every component necessary for a SatNOGS-compatible ground station as part of the project.
+Antennas and RF path hardware may be use SatNOGS, homebrew, or commercial as the station owner deems appropriate.
+To help the goal of easily constructed ground stations, the project's designs focus on common hardware, 3D-printed parts, and tools available in most experimenters' shops of local ``maker spaces.''
 
 
 \section{Conclusion}
+The SatNOGS project aims to provide and promote free and open source satellite ground stations.
+Modern open software and web technologies are used to coordinate these stations to more fully utilize the reception capabilities for low earth orbiting satellites.
+By using a modular approach to the ground station segment, the existing stations of radio amateurs and others may be used with the network.
+Avoiding custom, network-specific software and hardware and ensuring all design information, code, and received data is and remains freely available is a core tenet of the project.
+Individuals and organizations are encouraged to partner with the project to help realize these goals.
 
 \bibliography{references}
 
